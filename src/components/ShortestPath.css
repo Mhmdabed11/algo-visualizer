@@ -1,0 +1,55 @@
+.grid {
+  max-width: 1500px;
+  min-width: 1500px;
+  width: 1010px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.animate-node {
+  -webkit-animation: animateNode 0.5s; /* Safari 4.0 - 8.0 */
+  animation: animateNode 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.animate-path {
+  -webkit-animation: animatePath 0.5s; /* Safari 4.0 - 8.0 */
+  animation: animatePath 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animateNode {
+  from {
+    background-color: teal;
+  }
+  to {
+    background-color: turquoise;
+  }
+}
+
+@-webkit-keyframes animateNode {
+  from {
+    background-color: teal;
+  }
+  to {
+    background-color: turquoise;
+  }
+}
+
+@keyframes animatePath {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: yellow;
+  }
+}
+
+@-webkit-keyframes animatePath {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: yellow;
+  }
+}

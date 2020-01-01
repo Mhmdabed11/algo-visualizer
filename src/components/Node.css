@@ -1,0 +1,21 @@
+.grid-item {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: white;
+  display: inline-block;
+  border: 1px solid green;
+}
+
+.is-start {
+  background-color: red;
+}
+
+.is-finish {
+  background-color: blue;
+}
+
+.is-obstacle {
+  background-color: black !important;
+  animation: none !important;
+}

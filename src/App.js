@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 const routes = [
   {
-    path: "algo-visualizer/shortest-path",
+    path: "",
     exact: true,
     sidebar: () => <div>Shortest Path using BFS</div>,
     main: () => <ShortestPath />
@@ -18,7 +18,7 @@ function App() {
         <div className="sidebar">
           <ul style={{ listStyleType: "none", padding: 0 }}>
             <li>
-              <Link to="/shortest-path">Shortest Path using BFS</Link>
+              <Link to="/">Shortest Path using BFS</Link>
             </li>
           </ul>
         </div>

@@ -1,10 +1,10 @@
 .grid-item {
   width: 13px;
   height: 13px;
-  border-radius: 50%;
   background-color: white;
-  display: inline-block;
-  border: 1px solid green;
+  display: block;
+  float: left;
+  border: 1px solid gray;
 }
 
 .is-start {

@@ -1,6 +1,7 @@
 var cloneDeep = require("lodash.clonedeep");
 
 export const BFS = (graph, start, end) => {
+  // clone graph using lodash clondeDeep
   const newGraph = cloneDeep(graph);
   let queue = [];
   let animatedNodes = [];
@@ -10,8 +11,9 @@ export const BFS = (graph, start, end) => {
     let queueHead = queue.shift();
     if (queueHead.obstacle) continue;
     animatedNodes.push(queueHead);
-    if (queueHead.row === end.row && queueHead.col === end.col)
+    if (queueHead.row === end.row && queueHead.col === end.col) {
       return { animatedNodes, newGraph };
+    }
     let unvisitedNeighbors = getUnvisitedNeighbors(queueHead, newGraph);
     unvisitedNeighbors.forEach(neighbor => {
       if (!neighbor.visited) {
@@ -25,6 +27,8 @@ export const BFS = (graph, start, end) => {
 };
 
 const getUnvisitedNeighbors = (node, graph) => {
+  //get unvisited neighbors wither up - left- right - top
+
   let neighbors = [];
   const { row, col } = node;
   if (row < graph.length - 1) neighbors.push(graph[row + 1][col]);
@@ -37,6 +41,8 @@ const getUnvisitedNeighbors = (node, graph) => {
 };
 
 export const getShortestPath = end => {
+  //get shortest path by backtracking from end node
+
   let currentNode = end;
   let shortestPath = [];
   while (currentNode) {

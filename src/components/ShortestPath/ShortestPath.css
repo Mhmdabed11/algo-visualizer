@@ -1,9 +1,9 @@
 .grid {
-  max-width: 1500px;
-  min-width: 1500px;
-  width: 1010px;
+  max-width: 900px;
+  min-width: 900px;
+  width: 900px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .animate-node {
@@ -16,6 +16,16 @@
   -webkit-animation: animatePath 0.5s; /* Safari 4.0 - 8.0 */
   animation: animatePath 0.5s;
   animation-fill-mode: forwards;
+}
+
+.button-wrapper {
+  display: flex;
+  margin-top: 50px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.button-wrapper .button {
+  margin-right: 1rem;
 }
 
 @keyframes animateNode {
@@ -42,6 +52,8 @@
   }
   to {
     background-color: yellow;
+    border-color: transparent;
+    border-radius: 0%;
   }
 }
 
@@ -50,6 +62,8 @@
     background-color: red;
   }
   to {
+    border-color: transparent;
     background-color: yellow;
+    border-radius: 0%;
   }
 }

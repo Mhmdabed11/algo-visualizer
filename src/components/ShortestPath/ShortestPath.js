@@ -1,7 +1,7 @@
 import React from "react";
 import "./ShortestPath.css";
-import Node from "./Node";
-import { BFS, getShortestPath } from "../algorithms/BFS";
+import Node from "../Node/Node";
+import { BFS, getShortestPath } from "../../algorithms/BFS";
 var cloneDeep = require("lodash.clonedeep");
 
 class GraphNode {
@@ -9,14 +9,15 @@ class GraphNode {
     this.row = row;
     this.col = col;
     this.visited = false;
-    this.distance = Infinity;
     this.obstacle = false;
   }
 }
 
-const NUM_COLUMNS = 100;
+// grid size
+const NUM_COLUMNS = 60;
 const NUM_ROWS = 35;
 
+// fill up the graph
 const Graph = [];
 for (let i = 0; i < NUM_ROWS; i++) {
   let temp = [];
@@ -26,18 +27,17 @@ for (let i = 0; i < NUM_ROWS; i++) {
   Graph.push(temp);
 }
 
-export default function PathFindingVisualizer() {
+export default function ShortestPath() {
   const START_ROW = 0;
   const START_COL = 0;
   const END_ROW = 34;
-  const END_COL = 99;
+  const END_COL = 59;
 
   const [graph, setGraph] = React.useState(Graph);
-  const [startNode, setStartNode] = React.useState({
-    row: START_ROW,
-    col: START_COL
-  });
-  const [endNode, setEndNode] = React.useState({ row: END_ROW, col: END_COL });
+  const [startNode, setStartNode] = React.useState(
+    new GraphNode(START_ROW, START_COL)
+  );
+  const [endNode, setEndNode] = React.useState(new GraphNode(END_ROW, END_COL));
   const [processing, setProcessing] = React.useState(false);
   const grid = React.useRef(
     Graph.map(row => {
@@ -48,24 +48,25 @@ export default function PathFindingVisualizer() {
   );
 
   // add obstacle
-  const addObstacle = () => {
-    let randomNodes = [];
-    const graphClone = cloneDeep(graph);
-    for (let i = 0; i < 300; i++) {
-      const row = Math.floor(Math.random() * NUM_ROWS) + 0;
-      const col = Math.floor(Math.random() * NUM_COLUMNS) + 0;
-      graphClone[row][col].obstacle = true;
-      randomNodes.push({ row, col });
+  const addObstacles = () => {
+    if (!processing) {
+      const graphClone = cloneDeep(graph);
+
+      for (let i = 0; i < 300; i++) {
+        const row = Math.floor(Math.random() * NUM_ROWS) + 0;
+        const col = Math.floor(Math.random() * NUM_COLUMNS) + 0;
+        graphClone[row][col].obstacle = true;
+      }
+
+      // if start or end nodes are assigned as obstacles, then make them not obstacles
+      if (graphClone[startNode.row][startNode.col].obstacle) {
+        graphClone[startNode.row][startNode.col].obstacle = false;
+      }
+      if (graphClone[endNode.row][endNode.col].obstacle) {
+        graphClone[endNode.row][endNode.col].obstacle = false;
+      }
+      setGraph(graphClone);
     }
-    randomNodes = randomNodes.filter(
-      node =>
-        !(
-          (node.row === startNode.row && node.col === startNode.col) ||
-          (node.row === endNode.row && node.col === endNode.col)
-        )
-    );
-    setGraph(graphClone);
-    return randomNodes;
   };
 
   // reset
@@ -91,13 +92,13 @@ export default function PathFindingVisualizer() {
       const end = graph[END_ROW][END_COL];
       setStartNode(start);
       setEndNode(end);
-      console.log(BFS(graph, start, end));
       const { animatedNodes, newGraph } = BFS(graph, start, end);
       const nodesInShortestPathOrder = getShortestPath(
         newGraph[END_ROW][END_COL]
       ).reverse();
-
       setGraph(newGraph);
+
+      // animate BFS except for start node and end node
       for (let i = 0; i < animatedNodes.length; i++) {
         if (
           !(
@@ -113,11 +114,12 @@ export default function PathFindingVisualizer() {
               grid.current[animatedNodes[i].row][
                 animatedNodes[i].col
               ].classList.add("animate-node"),
-            15 * i
+            10 * i
           );
         }
       }
 
+      // animated path except for start node and end ndoe
       for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
         if (
           !(
@@ -134,19 +136,50 @@ export default function PathFindingVisualizer() {
               grid.current[nodesInShortestPathOrder[i].row][
                 nodesInShortestPathOrder[i].col
               ].classList.add("animate-path"),
-            15 * (animatedNodes.length - 1) + 20 * i
+            10 * (animatedNodes.length - 1) + 20 * i
           );
         }
       }
-      setProcessing(false);
+
+      // SET PROCESSING bollean to false after animation is done
+      setTimeout(
+        () => setProcessing(false),
+        10 * (animatedNodes.length - 1) +
+          20 * (nodesInShortestPathOrder.length - 1)
+      );
     }
   };
 
   return (
     <>
-      <button onClick={handleFindShortestPath}>Find Shortest Path</button>
-      <button onClick={handleReset}>Reset</button>
-      <button onClick={addObstacle}>Generate Walls</button>
+      <h1>
+        <u>Shortest Path using Breadth First Search Algorithm.</u>
+      </h1>
+      <div className="button-container">
+        <div className="button-wrapper">
+          <button
+            disabled={processing}
+            className="button"
+            onClick={handleFindShortestPath}
+          >
+            Find Shortest Path
+          </button>
+          <button
+            disabled={processing}
+            className="button"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+          <button
+            disabled={processing}
+            className="button"
+            onClick={addObstacles}
+          >
+            Generate a maze
+          </button>
+        </div>
+      </div>
       <div className="grid">
         {graph.map(item => {
           return item.map(subItem => {

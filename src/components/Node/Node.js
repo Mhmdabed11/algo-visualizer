@@ -2,6 +2,7 @@ import React from "react";
 import "./Node.css";
 
 const Node = React.forwardRef(({ type, children, obstacle }, ref) => {
+  // check type of node and check if it is an obstacle
   let typeClassName = "";
   let obstacleClassName = "";
   if (type === "start" || type === "finish") {
